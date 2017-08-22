@@ -1,0 +1,32 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Contact Storage" %}
+
+{% set submissions = craft.contactStorage.submissions %}
+
+{% block content %}
+
+    {% if submissions is not empty %}
+        <table class="data fullwidth">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                    <tr>
+                        <td>{{ submission.fromName }}</td>
+                        <td>{{ submission.dateUpdated }}</td>
+                        <td><a href="{{ actionUrl('contactStorage/delete', {id: submission.id}) }}" class="delete icon"></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are currently no submissions in the database.</p>
+    {% endif %}
+
+{% endblock %}
