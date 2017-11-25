@@ -41,4 +41,14 @@ class ContactStorageService extends BaseApplicationComponent
             $contactStorageRecord->delete();
         }
     }
+
+    public function getSubmission($id)
+    {
+        $record = ContactStorageRecord::model()->findByAttributes(array('id' => $id));
+
+        if ($record) {
+            return ContactStorageModel::populateModel($record);
+        }
+        return false;
+    }
 }

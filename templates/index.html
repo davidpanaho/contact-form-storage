@@ -1,5 +1,7 @@
 {% extends "_layouts/cp" %}
 
+{% includeCssResource "contactstorage/css/style.css" %}
+
 {% set title = "Contact Storage" %}
 
 {% set submissions = craft.contactStorage.submissions %}
@@ -10,17 +12,19 @@
         <table class="data fullwidth">
             <thead>
                 <tr>
-                    <th>Name</th>
                     <th>Date</th>
+                    <th>Name</th>
+                    <th>Email</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for submission in submissions %}
                     <tr>
-                        <td>{{ submission.fromName }}</td>
-                        <td>{{ submission.dateUpdated }}</td>
-                        <td><a href="{{ actionUrl('contactStorage/delete', {id: submission.id}) }}" class="delete icon"></a></td>
+                        <td class="date">{{ submission.dateUpdated }}</td>
+                        <td><strong><a href="{{ actionUrl('contactStorage/viewSubmission', {id: submission.id}) }}">{{ submission.fromName }}</a></strong></td>
+                        <td>{{ submission.fromEmail }}</td>
+                        <td class="delete"><a href="{{ actionUrl('contactStorage/delete', {id: submission.id}) }}" class="delete icon"></a></td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -1,0 +1,37 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Submission Details" %}
+{% set s = submission %}
+
+{% block main %}
+
+<div class="grid first" data-max-cols="3">
+    <div class="item" data-position="left" data-colspan="2">
+        <div class="pane">
+            <div class="grid">
+                <div class="item">
+                    <h3>From</h3>
+                    <p>Name: {{ s.fromName }}</p>
+                    <p>Email: <a href="mailto:{{ s.fromEmail }}">{{ s.fromEmail }}</a></p>
+                    <p>Subject: {{ s.subject }}</p>
+                    <p>Date: {{ s.dateCreated }}</p>
+                </div>
+                <div class="item">
+                    <h3>Message</h3>
+                    <div class="message">
+                        {{ s.htmlMessage|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="item last" data-position="right">
+        <div class="pane">
+            <a class="btn" href="{{ actionUrl('contactStorage/delete', {id: s.id}) }}">Delete</a>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
