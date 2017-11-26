@@ -1,4 +1,4 @@
-#Contact Form Storage
+# Contact Form Storage
 
 This is a Craft CMS plugin that extends the functionality of Pixel & Tonic's [Contact Form plugin for Craft](https://github.com/craftcms/contact-form/tree/v1) by saving submissions made through the form.
 
