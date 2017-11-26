@@ -26,7 +26,7 @@ class ContactStorageController extends BaseController
 
         // TODO: Change crumbs url to a better value
         $variables['crumbs'] = [
-            ['url' => '/admin/contactstorage', 'label' => 'Contact Storage']
+            ['url' => '/admin/contactstorage', 'label' => 'Contact Form Storage']
         ];
         $variables['submission'] = $submission;
 

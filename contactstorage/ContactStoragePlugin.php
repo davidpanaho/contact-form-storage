@@ -14,7 +14,7 @@ class ContactStoragePlugin extends BasePlugin
 {
     public function getName()
     {
-        return 'Contact Storage';
+        return 'Contact Form Storage';
     }
 
     public function getVersion()
