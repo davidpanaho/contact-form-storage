@@ -1,5 +1,14 @@
 [
     {
+        "version": "1.0.1",
+        "downloadUrl": "https://github.com/davidpanaho/contact-form-storage/archive/1.0.1.zip",
+        "date": "2017-11-26T13:00:00-08:00",
+        "notes": [
+            "# Minor Update",
+            "[Minor Fix]: Change name in admin section to 'Contact Form Storage' to be more clear."
+        ]
+    },
+    {
         "version": "1.0.0",
         "downloadUrl": "https://github.com/davidpanaho/contact-form-storage/archive/1.0.0.zip",
         "date": "2017-11-26T12:00:00-08:00",
