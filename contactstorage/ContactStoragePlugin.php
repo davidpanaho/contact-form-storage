@@ -32,6 +32,11 @@ class ContactStoragePlugin extends BasePlugin
         return 'https://www.davidpanaho.com';
     }
 
+    public function getDocumentationUrl()
+    {
+        return 'https://github.com/davidpanaho/contact-form-storage';
+    }
+
     public function init()
     {
         craft()->on('contactForm.beforeSend', function(ContactFormEvent $event) {
