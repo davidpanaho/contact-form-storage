@@ -45,9 +45,17 @@ class ContactStoragePlugin extends BasePlugin
     public function init()
     {
         craft()->on('contactForm.beforeSend', function(ContactFormEvent $event) {
-
             $message = $event->params['message'];
-            craft()->contactStorage->storeSubmission($message);
+
+            $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
+
+            if (craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
+                craft()->contactStorage->storeSubmission($message);
+            } else {
+                // TODO: Maybe fakeit is a better option
+                $message->addError('message', 'You failed the recaptcha challenge, please try again.');
+                $event->isValid = false;
+            }
         });
     }
 

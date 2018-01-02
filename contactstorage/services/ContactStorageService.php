@@ -4,6 +4,38 @@ namespace Craft;
 
 class ContactStorageService extends BaseApplicationComponent
 {
+    public function checkRecaptcha($responseCode) {
+
+        $ipAddress = craft()->request->getIpAddress();
+        $recaptchaSecret = craft()->config->get('recaptchaSecret', 'contactstorage');
+
+        $post_data = http_build_query(
+            [
+                'secret' => $recaptchaSecret,
+                'response' => $responseCode,
+                'remoteip' => $ipAddress,
+            ]
+        );
+
+        $opts = array('http' =>
+            array(
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $post_data
+            )
+        );
+        $context  = stream_context_create($opts);
+        $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify', false, $context);
+        $result = json_decode($response);
+
+
+        if (isset($result->success) && $result->success === true) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function storeSubmission($message)
     {
         $contactStorageRecord = new ContactStorageRecord();
