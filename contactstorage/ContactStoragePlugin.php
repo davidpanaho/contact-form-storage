@@ -49,12 +49,10 @@ class ContactStoragePlugin extends BasePlugin
 
             $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
 
-            if (craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
+            if (craft()->contactStorage->checkRecaptcha($recaptchaResponseCode) && craft()->contactStorage->validateHoneypot()) {
                 craft()->contactStorage->storeSubmission($message);
             } else {
-                // TODO: Maybe fakeit is a better option
-                $message->addError('message', 'You failed the recaptcha challenge, please try again.');
-                $event->isValid = false;
+                $event->fakeIt = true;
             }
         });
     }
