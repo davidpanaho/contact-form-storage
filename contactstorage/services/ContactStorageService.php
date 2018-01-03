@@ -36,6 +36,18 @@ class ContactStorageService extends BaseApplicationComponent
         return false;
     }
 
+    public function validateHoneypot() {
+        $settings = craft()->plugins->getPlugin('contactform')->getSettings();
+        $fieldName = $settings->honeypotField;
+
+        if (!$fieldName) {
+            return true;
+        }
+
+        $honey = craft()->request->getPost($fieldName);
+		return $honey == '';
+    }
+
     public function storeSubmission($message)
     {
         $contactStorageRecord = new ContactStorageRecord();
