@@ -19,7 +19,7 @@ class ContactStoragePlugin extends BasePlugin
 
     public function getVersion()
     {
-        return '1.0.2';
+        return '1.1.0';
     }
 
     public function getDeveloper()
@@ -45,8 +45,27 @@ class ContactStoragePlugin extends BasePlugin
     public function init()
     {
         craft()->on('contactForm.beforeSend', function(ContactFormEvent $event) {
-
             $message = $event->params['message'];
+            $reCaptchaEnabled = craft()->config->get('reCaptcha', 'contactstorage');
+
+            if ($reCaptchaEnabled) {
+                $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
+                if (!craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
+                    craft()->userSession->setError('There was a reCaptcha error with your submission. Please try again.');
+                    $event->isValid = false;
+                    return;
+                }
+            }
+
+            if ($message->hasErrors()) {
+                return;
+            }
+
+            if (!craft()->contactStorage->validateHoneypot()) {
+                $event->fakeIt = true;
+                return;
+            }
+
             craft()->contactStorage->storeSubmission($message);
         });
     }
