@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'recaptchaSecret' => '',
+    'reCaptcha' => true,
+    'reCaptchaSecret' => '',
 ];

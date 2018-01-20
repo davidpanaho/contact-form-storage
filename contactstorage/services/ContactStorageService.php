@@ -7,11 +7,11 @@ class ContactStorageService extends BaseApplicationComponent
     public function checkRecaptcha($responseCode) {
 
         $ipAddress = craft()->request->getIpAddress();
-        $recaptchaSecret = craft()->config->get('recaptchaSecret', 'contactstorage');
+        $reCaptchaSecret = craft()->config->get('reCaptchaSecret', 'contactstorage');
 
         $post_data = http_build_query(
             [
-                'secret' => $recaptchaSecret,
+                'secret' => $reCaptchaSecret,
                 'response' => $responseCode,
                 'remoteip' => $ipAddress,
             ]

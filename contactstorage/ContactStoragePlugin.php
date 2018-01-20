@@ -46,14 +46,15 @@ class ContactStoragePlugin extends BasePlugin
     {
         craft()->on('contactForm.beforeSend', function(ContactFormEvent $event) {
             $message = $event->params['message'];
+            $reCaptchaEnabled = craft()->config->get('reCaptcha', 'contactstorage');
 
-            $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
-
-            if (!craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
-                // TODO: check how this error is returned
-                craft()->userSession->setError('There was a reCaptcha error with your submission. Please try again.');
-                $event->isValid = false;
-                return;
+            if ($reCaptchaEnabled) {
+                $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
+                if (!craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
+                    craft()->userSession->setError('There was a reCaptcha error with your submission. Please try again.');
+                    $event->isValid = false;
+                    return;
+                }
             }
 
             if ($message->hasErrors()) {
