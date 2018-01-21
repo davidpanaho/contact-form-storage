@@ -13,6 +13,10 @@ This is a Craft CMS plugin that extends the functionality of Pixel & Tonic's [Co
 2. [Download](https://github.com/davidpanaho/contact-form-storage/archive/master.zip) this repo and place the `contactstorage` folder in the plugins folder of your Craft installation.
 3. In the admin area of your site, click on the **Settings** menu item. In the System section, click **Plugins**. Contact storage should be listed in the available plugins. Click the **Install** button. This should automatically enable the plugin too.
 
+## ReCaptcha
+
+This plugin now supports [reCaptcha](https://www.google.com/recaptcha/intro/). Implementation notes coming soon.
+
 ## Notes
 
 - This plugin has only been tested with the example form found in the instructions for [Contact Form plugin for Craft](https://github.com/craftcms/contact-form/tree/v1). As the plugin is used for more sites, I will update it to be more robust.

@@ -13,17 +13,22 @@
             <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Name</th>
                     <th>Email</th>
+                    <th>Name</th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 {% for submission in submissions %}
                     <tr>
-                        <td class="date">{{ submission.dateUpdated }}</td>
-                        <td><strong><a href="{{ actionUrl('contactStorage/viewSubmission', {id: submission.id}) }}">{{ submission.fromName }}</a></strong></td>
+                        <td class="date">
+                            {{ submission.dateUpdated|date("h:ia") }} <br>
+                            {{ submission.dateUpdated|date("d M, Y") }}
+                        </td>
                         <td>{{ submission.fromEmail }}</td>
+                        <td>{{ submission.fromName }}</td>
+                        <td><a class="btn" href="{{ actionUrl('contactStorage/viewSubmission', {id: submission.id}) }}">View Submission</a></td>
                         <td class="delete"><a href="{{ actionUrl('contactStorage/delete', {id: submission.id}) }}" class="delete icon"></a></td>
                     </tr>
                 {% endfor %}

@@ -1,5 +1,13 @@
 [
     {
+        "version": "1.1.1",
+        "downloadUrl": "https://github.com/davidpanaho/contact-form-storage/archive/1.1.1.zip",
+        "date": "2018-01-20T08:00:00-08:00",
+        "notes": [
+            "[Fixed] Made admin templates clearer"
+        ]
+    },
+    {
         "version": "1.1.0",
         "downloadUrl": "https://github.com/davidpanaho/contact-form-storage/archive/1.1.0.zip",
         "date": "2018-01-20T08:00:00-08:00",
