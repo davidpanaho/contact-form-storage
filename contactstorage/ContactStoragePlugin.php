@@ -49,8 +49,9 @@ class ContactStoragePlugin extends BasePlugin
             $reCaptchaEnabled = craft()->config->get('reCaptcha', 'contactstorage');
 
             $formId = craft()->request->getParam('formId');
-            if (!$formId) {
-                // Assumes the default form has an id of 1
+            if (!$formId || !craft()->contactStorage->getForm($formId)) {
+                // Save the form to a formId of 1 regardless of whether it exists,
+                // that way, no submissions are lost
                 $formId = 1;
             }
 
