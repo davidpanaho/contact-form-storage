@@ -50,8 +50,8 @@ class ContactStoragePlugin extends BasePlugin
 
             $formId = craft()->request->getParam('formId');
             if (!$formId) {
-                $event->isValid = false;
-                return;
+                // Assumes the default form has an id of 1
+                $formId = 1;
             }
 
             if ($reCaptchaEnabled) {
@@ -88,5 +88,10 @@ class ContactStoragePlugin extends BasePlugin
             'contactstorage/form/(?P<formId>\d+)' => ['action' => 'contactStorage/form/formSubmissions'],
             'contactstorage/submission/(?P<submissionId>\d+)'=> ['action' => 'contactStorage/submission/viewSubmission'],
         ];
+    }
+
+    public function onAfterInstall()
+    {
+        craft()->contactStorage->createForm('Default');
     }
 }
