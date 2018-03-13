@@ -1,0 +1,39 @@
+{% extends "_layouts/cp" %}
+
+{% includeCssResource "contactstorage/css/style.css" %}
+
+{% set title = form.name %}
+
+{% block content %}
+
+    {% if submissions %}
+        <table class="data fullwidth">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission in submissions %}
+                    <tr>
+                        <td class="date">
+                            {{ submission.dateUpdated|date("h:ia") }} <br>
+                            {{ submission.dateUpdated|date("d M, Y") }}
+                        </td>
+                        <td>{{ submission.fromEmail }}</td>
+                        <td>{{ submission.fromName }}</td>
+                        <td><a class="btn" href="/admin/contactstorage/submission/{{ submission.id }}">View Submission</a></td>
+                        <td class="delete"><a href="{{ actionUrl('contactStorage/submission/delete', {id: submission.id}) }}" class="delete icon"></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>There are currently no submissions for this form.</p>
+    {% endif %}
+
+{% endblock %}

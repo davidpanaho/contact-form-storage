@@ -48,6 +48,12 @@ class ContactStoragePlugin extends BasePlugin
             $message = $event->params['message'];
             $reCaptchaEnabled = craft()->config->get('reCaptcha', 'contactstorage');
 
+            $formId = craft()->request->getParam('formId');
+            if (!$formId) {
+                $event->isValid = false;
+                return;
+            }
+
             if ($reCaptchaEnabled) {
                 $recaptchaResponseCode = craft()->request->getPost('g-recaptcha-response');
                 if (!craft()->contactStorage->checkRecaptcha($recaptchaResponseCode)) {
@@ -66,12 +72,21 @@ class ContactStoragePlugin extends BasePlugin
                 return;
             }
 
-            craft()->contactStorage->storeSubmission($message);
+            craft()->contactStorage->storeSubmission($message, $formId);
         });
     }
 
     public function hasCpSection()
     {
         return true;
+    }
+
+    public function registerCpRoutes()
+    {
+        return [
+            'contactstorage/form/new' => ['action' => 'contactStorage/form/new'],
+            'contactstorage/form/(?P<formId>\d+)' => ['action' => 'contactStorage/form/formSubmissions'],
+            'contactstorage/submission/(?P<submissionId>\d+)'=> ['action' => 'contactStorage/submission/viewSubmission'],
+        ];
     }
 }

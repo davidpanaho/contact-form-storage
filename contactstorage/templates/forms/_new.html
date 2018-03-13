@@ -1,0 +1,19 @@
+{% import "_includes/forms" as forms %}
+{% extends "_layouts/cp" %}
+{% set fullPageForm = true %}
+
+{% set title = "New Form" %}
+
+{% block content %}
+	<input type="hidden" name="action" value="contactStorage/form/create">
+
+	{{ forms.textField({
+		first:        true,
+		label:        "Form Name"|t,
+		required:     true,
+		id:           'formName',
+		name:         'formName',
+		autofocus:    true,
+	}) }}
+
+{% endblock %}

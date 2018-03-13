@@ -2,11 +2,11 @@
 
 namespace Craft;
 
-class ContactStorageRecord extends BaseRecord
+class ContactStorage_SubmissionRecord extends BaseRecord
 {
     public function getTableName()
     {
-        return 'contact_storage';
+        return 'contactstorage_submissions';
     }
 
     public function defineAttributes()
@@ -16,6 +16,10 @@ class ContactStorageRecord extends BaseRecord
             'fromEmail' => array(AttributeType::String, 'default' => null),
             'subject' => array(AttributeType::String, 'default' => null),
             'htmlMessage' => array(AttributeType::String, 'default' => null),
+            'formId' => array(
+                'type' => AttributeType::Number,
+                'required' => true
+            ),
         );
     }
 }

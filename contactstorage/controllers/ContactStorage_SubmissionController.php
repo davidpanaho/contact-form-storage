@@ -2,7 +2,7 @@
 
 namespace Craft;
 
-class ContactStorageController extends BaseController
+class ContactStorage_SubmissionController extends BaseController
 {
     public function actionDelete()
     {
@@ -15,9 +15,9 @@ class ContactStorageController extends BaseController
         $this->redirect('contactstorage');
     }
 
-    public function actionViewSubmission()
+    public function actionViewSubmission(array $variables = [])
     {
-        $id = craft()->request->getRequiredParam('id');
+        $id = $variables['submissionId'];
         $submission = craft()->contactStorage->getSubmission($id);
 
         if (!$submission) {
@@ -25,9 +25,9 @@ class ContactStorageController extends BaseController
         }
 
         // TODO: Change crumbs url to a better value
-        $variables['crumbs'] = [
-            ['url' => '/admin/contactstorage', 'label' => 'Contact Form Storage']
-        ];
+        // $variables['crumbs'] = [
+        //     ['url' => '/admin/contactstorage', 'label' => 'Contact Form Storage']
+        // ];
         $variables['submission'] = $submission;
 
         return $this->renderTemplate('contactstorage/submissions/_entry', $variables);

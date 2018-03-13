@@ -4,38 +4,36 @@
 
 {% set title = "Contact Form Storage" %}
 
-{% set submissions = craft.contactStorage.submissions %}
+{% set forms = craft.contactStorage.forms %}
+
+{% set extraPageHeaderHtml %}
+    <a class="submit btn add icon" href="/admin/contactstorage/form/new">Create a form</a>
+{% endset %}
 
 {% block content %}
 
-    {% if submissions is not empty %}
-        <table class="data fullwidth">
-            <thead>
+<table class="data fullwidth">
+    {% if forms %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Form Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in forms %}
                 <tr>
-                    <th>Date</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th></th>
-                    <th></th>
+                    <td>{{ form.id }}</td>
+                    <td>{{ form.name }}</td>
+                    <td><a class="btn" href="/admin/contactstorage/form/{{ form.id }}">View Submissions</a></td>
+                    <td></td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for submission in submissions %}
-                    <tr>
-                        <td class="date">
-                            {{ submission.dateUpdated|date("h:ia") }} <br>
-                            {{ submission.dateUpdated|date("d M, Y") }}
-                        </td>
-                        <td>{{ submission.fromEmail }}</td>
-                        <td>{{ submission.fromName }}</td>
-                        <td><a class="btn" href="{{ actionUrl('contactStorage/viewSubmission', {id: submission.id}) }}">View Submission</a></td>
-                        <td class="delete"><a href="{{ actionUrl('contactStorage/delete', {id: submission.id}) }}" class="delete icon"></a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            {% endfor %}
+        </tbody>
     {% else %}
-        <p>There are currently no submissions in the database.</p>
+        No forms currently exist.
     {% endif %}
+</table>
 
 {% endblock %}

@@ -4,7 +4,8 @@ namespace Craft;
 
 class ContactStorageService extends BaseApplicationComponent
 {
-    public function checkRecaptcha($responseCode) {
+    public function checkRecaptcha($responseCode)
+    {
 
         $ipAddress = craft()->request->getIpAddress();
         $reCaptchaSecret = craft()->config->get('reCaptchaSecret', 'contactstorage');
@@ -36,7 +37,8 @@ class ContactStorageService extends BaseApplicationComponent
         return false;
     }
 
-    public function validateHoneypot() {
+    public function validateHoneypot()
+    {
         $settings = craft()->plugins->getPlugin('contactform')->getSettings();
         $fieldName = $settings->honeypotField;
 
@@ -45,54 +47,96 @@ class ContactStorageService extends BaseApplicationComponent
         }
 
         $honey = craft()->request->getPost($fieldName);
-		return $honey == '';
+        return $honey == '';
     }
 
-    public function storeSubmission($message)
+    public function storeSubmission($message, $formId)
     {
-        $contactStorageRecord = new ContactStorageRecord();
-        $contactStorageRecord->fromName = $message->fromName;
-        $contactStorageRecord->fromEmail = $message->fromEmail;
-        $contactStorageRecord->subject = $message->subject;
-        $contactStorageRecord->htmlMessage = $message->htmlMessage;
+        $record = new ContactStorage_SubmissionRecord();
+        $record->fromName = $message->fromName;
+        $record->fromEmail = $message->fromEmail;
+        $record->subject = $message->subject;
+        $record->htmlMessage = $message->htmlMessage;
+        $record->formId = $formId;
 
-        $contactStorageRecord->save();
+        $record->save();
     }
 
-    public function getSubmissions()
+    public function getSubmissions($id)
     {
-        $contactStorageRecords = ContactStorageRecord::model()->findAll(array('order' => 'dateUpdated desc'));
+        $attributes = ['formId' => $id];
+        $criteria = ['order' => 'dateCreated DESC'];
 
-        // Craft::dd($contactStorageRecords);
+        $records = ContactStorage_SubmissionRecord::model()->findAllByAttributes($attributes, $criteria);
 
-        $contactStorageModels = [];
+        $models = [];
 
-        if ($contactStorageRecords) {
-            foreach ($contactStorageRecords as $record) {
-                $contactStorageModels[] = ContactStorageModel::populateModel($record);
+        if ($records) {
+            foreach ($records as $record) {
+                $models[] = ContactStorage_SubmissionModel::populateModel($record);
             }
         }
 
         // TODO check if this needs to return a model instead. If not, I can probably delete the model class
-        return $contactStorageModels;
+        return $models;
     }
 
     public function deleteSubmission($id)
     {
-        $contactStorageRecord = ContactStorageRecord::model()->findByAttributes(array('id' => $id));
+        $record = ContactStorage_SubmissionRecord::model()->findByAttributes(array('id' => $id));
 
-        if ($contactStorageRecord) {
-            $contactStorageRecord->delete();
+        if ($record) {
+            $record->delete();
         }
     }
 
     public function getSubmission($id)
     {
-        $record = ContactStorageRecord::model()->findByAttributes(array('id' => $id));
+        $record = ContactStorage_SubmissionRecord::model()->findByAttributes(array('id' => $id));
 
         if ($record) {
-            return ContactStorageModel::populateModel($record);
+            return ContactStorage_SubmissionModel::populateModel($record);
         }
         return false;
+    }
+
+    public function getForm($id)
+    {
+        $record = ContactStorage_FormRecord::model()->findByAttributes(array('id' => $id));
+        if (!$record) {
+            return false;
+        }
+        $model = ContactStorage_FormModel::populateModel($record);
+
+        return $model;
+    }
+
+    public function getForms()
+    {
+        $records = ContactStorage_FormRecord::model()->findAll(['order' => 'id']);
+        $models = [];
+
+        if ($records) {
+            foreach ($records as $record) {
+                $models[] = ContactStorage_FormModel::populateModel($record);
+            }
+
+            return $models;
+        }
+
+        return false;
+    }
+
+    public function createForm($name)
+    {
+        $record = new ContactStorage_FormRecord();
+        $record->name = $name;
+
+        if (!$record->validate()) {
+            return false;
+        }
+
+        $record->save();
+        return true;
     }
 }
