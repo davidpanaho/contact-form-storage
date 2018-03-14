@@ -52,4 +52,15 @@ class ContactStorage_FormController extends BaseController
 
         return $this->renderTemplate('contactstorage/forms/_form', $variables);
     }
+
+    public function actionDelete()
+    {
+        $id = craft()->request->getRequiredParam('id');
+
+        craft()->contactStorage->deleteForm($id);
+
+        craft()->userSession->setNotice('Form deleted');
+
+        $this->redirect('contactstorage');
+    }
 }

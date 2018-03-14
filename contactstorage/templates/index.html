@@ -19,6 +19,7 @@
                 <th>ID</th>
                 <th>Form Name</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +28,7 @@
                     <td>{{ form.id }}</td>
                     <td>{{ form.name }}</td>
                     <td><a class="btn" href="/admin/contactstorage/form/{{ form.id }}">View Submissions</a></td>
-                    <td></td>
+                    <td class="delete"><a href="{{ actionUrl('contactStorage/form/delete', {id: form.id}) }}" class="delete icon"></a></td>
                 </tr>
             {% endfor %}
         </tbody>

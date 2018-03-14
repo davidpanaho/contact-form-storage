@@ -139,4 +139,13 @@ class ContactStorageService extends BaseApplicationComponent
         $record->save();
         return true;
     }
+
+    public function deleteForm($id)
+    {
+        $record = ContactStorage_FormRecord::model()->findByAttributes(array('id' => $id));
+
+        if ($record) {
+            $record->delete();
+        }
+    }
 }
